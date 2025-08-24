@@ -99,7 +99,7 @@ if (fromD && toD) {
 } else if (toD) {
   query.date = { $lte: toD };
 }
-  log = Exercise.find(
+  log = await Exercise.find(
   query,
   { description: 1, duration: 1, date: 1, _id: 0 }
 ).limit(Number(req.query.limit) || 0);
@@ -111,9 +111,9 @@ const formattedLog = log.map(ex => ({
 }));
 
   res.json({
-    username:id.username,  
-    count: log.length,  
     _id: userId, 
+    username:id.username,  
+    count: formattedLog.length, 
     log: formattedLog
   })  
 });
