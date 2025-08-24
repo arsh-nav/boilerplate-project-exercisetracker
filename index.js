@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 const uri = "mongodb+srv://arshianawab:Ars113733@cluster0.3dbgrow.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 app.use(cors())
 app.use(express.static('public'))
-app.use(express.json());
+// app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 mongoose.connect(uri,{
   useNewUrlParser: true,
   useUnifiedTopology: true    
@@ -32,7 +33,7 @@ app.post('/api/users', async(req, res) => {
 app.get('/api/users', async(req,res) => {
   try{
     const users = await User.find({},{username:1,_id:1});
-    res.send(users);
+    res.json(users);
   }
   catch (err){
     res.status(500).json({error: 'Server Error'});
@@ -98,7 +99,7 @@ if (fromD && toD) {
 } else if (toD) {
   query.date = { $lte: toD };
 }
-  log = await Exercise.find(
+  log = Exercise.find(
   query,
   { description: 1, duration: 1, date: 1, _id: 0 }
 ).limit(Number(req.query.limit) || 0);
